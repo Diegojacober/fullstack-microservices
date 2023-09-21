@@ -5,10 +5,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: "python app.py"
     ports:
       - 8001:5000
     volumes:
       - .:/app
+    depends_on:
+      - db
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'python -u consumer.py'
     depends_on:
       - db
 
