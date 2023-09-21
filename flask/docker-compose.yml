@@ -13,11 +13,11 @@ services:
       - db
 
   db:
-    image: mysql:5.7.22
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: main
-      MYSQL_USER: root
+      MYSQL_USER: dev
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
     volumes:
