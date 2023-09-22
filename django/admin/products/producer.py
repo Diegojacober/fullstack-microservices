@@ -1,10 +1,11 @@
 import pika, json
 
-params = pika.URLParameters("amqps://rqcrzgvu:Tl0IOB_ajOW8leP0s-7xdc-9M6E0yLGd@porpoise.rmq.cloudamqp.com/rqcrzgvu")
+params = pika.URLParameters("amqps://lciwlelw:Le62_s1GjgyHGlKChiTo7JvLwu_TmiHf@jackal.rmq.cloudamqp.com/lciwlelw")
 
 connection = pika.BlockingConnection(params)
 
 channel = connection.channel()
+
 
 def publish(method, body):
     properties = pika.BasicProperties(method)

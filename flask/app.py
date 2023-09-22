@@ -40,13 +40,17 @@ class ProductUser(db.Model):
 
 migrate = Migrate(app, db)
 
+@app.route('/api/products')
+def index():
+    return jsonify(Product.query.all())
+
 @app.route('/api/products/<int:id>/like', methods=['POST'])
 def like(id):
-    req = requests.get('http://docker.for.mac.windows:8000/api/user')
+    req = requests.get('http://host.docker.internal:8000/api/v1/user')
     json = req.json()
 
     try:
-        productUser = ProductUser(user_id=json['id'], product_id=id)
+        productUser = ProductUser(user_id=json["id"], product_id=id)
         db.session.add(productUser)
         db.session.commit()
 

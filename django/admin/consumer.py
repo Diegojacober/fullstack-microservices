@@ -1,6 +1,11 @@
-import pika
+import pika, json, os, django
 
-params = pika.URLParameters("amqps://rqcrzgvu:Tl0IOB_ajOW8leP0s-7xdc-9M6E0yLGd@porpoise.rmq.cloudamqp.com/rqcrzgvu")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "admin.settings")
+django.setup()
+
+from products.models import Product
+
+params = pika.URLParameters("amqps://lciwlelw:Le62_s1GjgyHGlKChiTo7JvLwu_TmiHf@jackal.rmq.cloudamqp.com/lciwlelw")
 
 connection = pika.BlockingConnection(params)
 
@@ -8,9 +13,16 @@ channel = connection.channel()
 
 channel.queue_declare(queue='admin')
 
+
 def callback(ch, method, properties, body):
     print('Received in admin')
-    print(body)
+    id = json.loads(body)
+    print(id)
+    product = Product.objects.get(id=id)
+    product.likes = product.likes + 1
+    product.save()
+    print('Product likes increased!')
+
 
 channel.basic_consume(queue='admin', on_message_callback=callback, auto_ack=True)
 
